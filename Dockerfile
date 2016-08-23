@@ -11,6 +11,8 @@ ENV PATH /opt/conda/bin:$PATH
 RUN pip install elasticsearch
 RUN pip install pyes
 RUN pip install scikit-learn
+RUN /opt/conda/bin/conda install -y -c anaconda seaborn=0.7.1
+
 
 ### Install Tensor Flow
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -60,6 +62,12 @@ COPY jupyter_notebook_config.py /root/.jupyter/
 
 # Copy sample notebooks.
 COPY notebooks /notebooks
+
+# Download sample code into projects
+ENV SAMPLE /opt/notebooks/samples
+RUN mkdir $SAMPLE
+RUN git clone https://github.com/rhiever/Data-Analysis-and-Machine-Learning-Projects.git /opt/notebooks/samples
+
 
 # TensorBoard
 EXPOSE 6006
